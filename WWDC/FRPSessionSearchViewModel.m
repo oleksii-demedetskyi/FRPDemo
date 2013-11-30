@@ -59,6 +59,13 @@
     // 2) Find all matched words
     // 3) Send to suggestion
     
+    RACSignal* allWords = [RACObserve(self, model.sessions) map:^id(NSArray* sessions) {
+        return [FRPSessionListModel wordsInSessions:sessions];
+    }];
+    
+    RAC(self, suggestions) = allWords;
+    
+    
     @weakify(self)
     RACSignal* selectedModel = [RACObserve(self, selectedTitleIndex) map:^id(NSNumber*  value) {
         @strongify(self)

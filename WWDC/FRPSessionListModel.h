@@ -16,5 +16,6 @@
 
 + (NSArray*)sessionsMatchingSearch:(NSString*)searchTerm
                         inSessions:(NSArray*)sessions;
++ (NSArray*)wordsInSessions:(NSArray*)sessions;
 
 @end

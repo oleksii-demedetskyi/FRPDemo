@@ -16,6 +16,7 @@
 @interface FRPSessionSearchViewController()
 
 @property (nonatomic, strong) FRPStringArrayDataSource* dataSource;
+@property (nonatomic, strong) FRPStringArrayDataSource* suggestionsDataSource;
 
 @end
 
@@ -108,7 +109,9 @@
             
             tableView.dataSource = self.dataSource;
             
-            RACSignal* didSelectCell = [self rac_signalForSelector:@selector(tableView:didSelectRowAtIndexPath:)];
+            RACSignal* didSelectCell = [[self rac_signalForSelector:@selector(tableView:didSelectRowAtIndexPath:)] filter:^BOOL(RACTuple* t) {
+                return t.first == tableView;
+            }];
             [didSelectCell subscribeNext:^(RACTuple* t) {
                 RACTupleUnpack(UITableView* tv, NSIndexPath* ip) = t;
                 [tv deselectRowAtIndexPath:ip animated:YES];
@@ -123,9 +126,30 @@
             
             tableView.delegate = (id<UITableViewDelegate>)self;
         }
-        /* Link data with view model */ {
-            RACChannelTo(searchBar, text) = RACChannelTo(self, viewModel.searchTerm);
+        
+        /* Link with suggestion callbacks */ {
+            self.suggestionsDataSource = [FRPStringArrayDataSource emptyDataSource];
+            RAC(self, suggestionsDataSource.strings) = RACObserve(self, viewModel.suggestions);
+            [RACObserve(self, suggestionsDataSource.strings) subscribeNext:^(id _) {
+                [suggestionTable reloadData];
+            }];
             
+            suggestionTable.dataSource = self.suggestionsDataSource;
+            
+            RACSignal* didSelectCell = [[self rac_signalForSelector:@selector(tableView:didSelectRowAtIndexPath:)] filter:^BOOL(RACTuple* t) {
+                return t.first == suggestionTable;
+            }];
+            [didSelectCell subscribeNext:^(RACTuple* t) {
+                RACTupleUnpack(UITableView* tv, NSIndexPath* ip) = t;
+                [tv deselectRowAtIndexPath:ip animated:YES];
+            }];
+            
+            RACSignal* selectedWord = [didSelectCell map:^id(RACTuple* t) {
+                return @([t.second row]);
+            }];
+        }
+        
+        /* Link data with view model */ {
             RACSignal* hasTitles = [RACObserve(self, viewModel.titles)
                                     map:^NSNumber*(NSArray* titles) {
                                         return @(titles.count > 0);

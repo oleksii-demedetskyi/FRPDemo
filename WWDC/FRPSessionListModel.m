@@ -91,19 +91,7 @@
     });
     
     NSArray* matchingSessions = [sessions ma_select:^BOOL(FRPSessionModel* session) {
-        NSArray* sessionWords = ({
-            NSCharacterSet* separator = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
-            NSArray* fatWords = [@[session.title,
-                                   session.descriptionText,
-                                   session.track]
-                                 ma_map:^NSArray*(NSString* info) {
-                                     return [info componentsSeparatedByCharactersInSet:separator];
-                                 }];
-            
-            [fatWords ma_reduce:@[] block:^NSArray*(NSArray* a, NSArray* b) {
-                return [a arrayByAddingObjectsFromArray:b];
-            }];
-        });
+        NSArray* sessionWords = [self wordsInSession:session];
         NSStringCompareOptions matchOptions = ({
             NSDiacriticInsensitiveSearch | NSCaseInsensitiveSearch | NSAnchoredSearch;
         });
@@ -146,4 +134,27 @@
     return matchingSessions;
 }
 
++ (NSArray*)wordsInSessions:(NSArray*)sessions
+{
+    return [[sessions ma_map:^NSArray*(FRPSessionModel* session) {
+        return [self wordsInSession:session];
+    }] ma_reduce:@[] block:^NSArray*(NSArray* a, NSArray* b) {
+        return [a arrayByAddingObjectsFromArray:b];
+    }];
+}
+
++ (NSArray*)wordsInSession:(FRPSessionModel*)session
+{
+    NSCharacterSet* separator = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+    return [[@[session.title,
+               session.descriptionText,
+               session.track]
+             ma_map:^NSArray*(NSString* info) {
+                 return [info componentsSeparatedByCharactersInSet:separator];
+             }]
+            ma_reduce:@[] block:^NSArray*(NSArray* a, NSArray* b) {
+                return [a arrayByAddingObjectsFromArray:b];
+            }];
+
+}
 @end
