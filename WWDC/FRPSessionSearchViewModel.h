@@ -8,11 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+@class FRPSessionDetailsViewModel;
+
 @interface FRPSessionSearchViewModel : NSObject
+
++ (instancetype)stubModel;
 
 @property (nonatomic, readonly, copy) NSString* searchTerm;
 
 @property (nonatomic, readonly, copy) NSArray* titles;
 @property (nonatomic, readonly, copy) NSArray* suggestions;
+
+@property (nonatomic, readonly, copy) NSNumber* selectedTitleIndex;
+@property (nonatomic, readonly) FRPSessionDetailsViewModel* selectedSessionDetails;
 
 @end

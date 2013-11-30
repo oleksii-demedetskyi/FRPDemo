@@ -8,6 +8,7 @@
 
 #import "FRPSessionSearchViewController.h"
 #import "FRPSessionSearchViewModel.h"
+#import "FRPStringArrayDataSource.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <Parus/Parus.h>
@@ -18,20 +19,14 @@
 {
     UIView* view = [UIView new]; {
         
-        /// Define components.
-        
         UISearchBar* searchBar = [UISearchBar new]; {
             searchBar.translatesAutoresizingMaskIntoConstraints = NO;
             searchBar.showsCancelButton = YES;
-            
-            // Search bar here
             
             [view addSubview:searchBar];
         }
         UITableView* tableView = [UITableView new]; {
             tableView.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            // table view here
             
             [view addSubview:tableView];
         }
@@ -58,50 +53,72 @@
             [view addSubview:suggestionTable];
         }
         
-        /// Layout
-        
-        NSArray*(^placeUnderSearch)(UIView*) = ^(UIView* v) {
-            NSDictionary* views = NSDictionaryOfVariableBindings(searchBar, v);
-            return PVGroup(@[PVVFL(@"H:|[v]|"),
-                             PVVFL(@"V:[searchBar][v]|")]).withViews(views).asArray;
-        };
-        
-        [view addConstraints:
-         PVGroup(@[ PVVFL(@"H:|[searchBar]|"),
-                    PVTopOf(searchBar).equalTo.topOf(view),
-                    placeUnderSearch(tableView),
-                    placeUnderSearch(suggestionTable),
-                    placeUnderSearch(noDataView)
-                    ]).withViews(NSDictionaryOfVariableBindings(searchBar)).asArray];
-        
-        /// Fill with data
-        RACSignal* cancelSearch = [self rac_signalForSelector:@selector(searchBarCancelButtonClicked:)
-                                                 fromProtocol:@protocol(UISearchBarDelegate)];        
-        
-        [cancelSearch subscribeNext:^(RACTuple* t) {
-            UISearchBar* s = t.first;
+        /* Layout UI */ {
+            NSArray*(^placeUnderSearch)(UIView*) = ^(UIView* v) {
+                NSDictionary* views = NSDictionaryOfVariableBindings(searchBar, v);
+                return PVGroup(@[PVVFL(@"H:|[v]|"),
+                                 PVVFL(@"V:[searchBar][v]|")]).withViews(views).asArray;
+            };
             
-            [s resignFirstResponder];
-        }];
+            [view addConstraints:
+             PVGroup(@[ PVVFL(@"H:|[searchBar]|"),
+                        PVTopOf(searchBar).equalTo.topOf(view),
+                        placeUnderSearch(tableView),
+                        placeUnderSearch(suggestionTable),
+                        placeUnderSearch(noDataView)
+                        ]).withViews(NSDictionaryOfVariableBindings(searchBar)).asArray];
+        }
         
-        searchBar.delegate = (id<UISearchBarDelegate>)self;
-        
-        RACChannelTo(searchBar, text) = RACChannelTo(self, viewModel.searchTerm);
-        
-        RACSignal* hasTitles = [RACObserve(self, viewModel.titles)
-                                map:^NSNumber*(NSArray* titles) {
-                                    return @(titles.count > 0);
-                                }];
-        
-        RACSignal* hasSuggestion = [RACObserve(self, viewModel.suggestions)
-                                    map:^id(NSArray* suggestions) {
-                                        return @(suggestions.count > 0);
+        /* Setup search bar delegates */ {
+            RACSignal* cancelSearch = [self rac_signalForSelector:@selector(searchBarCancelButtonClicked:)
+                                                     fromProtocol:@protocol(UISearchBarDelegate)];
+            
+            [cancelSearch subscribeNext:^(RACTuple* t) {
+                UISearchBar* s = t.first;
+                
+                [s resignFirstResponder];
+            }];
+            
+            searchBar.delegate = (id<UISearchBarDelegate>)self;
+        }
+        /* Setup table view callbacks */ {
+            FRPStringArrayDataSource* stringsDataSource = [FRPStringArrayDataSource emptyDataSource];
+            RAC(stringsDataSource, strings) = RACObserve(self, viewModel.titles);
+            
+            tableView.dataSource = stringsDataSource;
+            
+            RACSignal* didSelectCell = [self rac_signalForSelector:@selector(tableView:didSelectRowAtIndexPath:)];
+            [didSelectCell subscribeNext:^(RACTuple* t) {
+                RACTupleUnpack(UITableView* tv, NSIndexPath* ip) = t;
+                [tv deselectRowAtIndexPath:ip animated:YES];
+            }];
+            
+            RACSignal* selectedIndex = [didSelectCell map:^id(RACTuple* t) { return @([t.second row]); }];
+            RAC(self, selectedTitleIndex) = [selectedIndex flattenMap:^RACStream *(NSNumber* newIndex) {
+                return [[RACSignal return:newIndex] concat:[RACSignal return:nil]];
+            }];
+            
+            RAC(self, viewModel.selectedTitleIndex) = [RACObserve(self, selectedTitleIndex) ignore:nil];
+            
+            tableView.delegate = (id<UITableViewDelegate>)self;
+        }
+        /* Link data with view model */ {
+            RACChannelTo(searchBar, text) = RACChannelTo(self, viewModel.searchTerm);
+            
+            RACSignal* hasTitles = [RACObserve(self, viewModel.titles)
+                                    map:^NSNumber*(NSArray* titles) {
+                                        return @(titles.count > 0);
                                     }];
-        
-        RAC(tableView, hidden) = [hasTitles not];
-        RAC(noDataView, hidden) = hasTitles;
-        RAC(suggestionTable, hidden) = [hasSuggestion not];
-        
+            
+            RACSignal* hasSuggestion = [RACObserve(self, viewModel.suggestions)
+                                        map:^id(NSArray* suggestions) {
+                                            return @(suggestions.count > 0);
+                                        }];
+            
+            RAC(tableView, hidden) = [hasTitles not];
+            RAC(noDataView, hidden) = hasTitles;
+            RAC(suggestionTable, hidden) = [hasSuggestion not];
+        }
     }
     
     [view layoutIfNeeded];
@@ -109,12 +126,6 @@
     self.view = view;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.title = @"Session search";
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-}
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {}
 
 @end

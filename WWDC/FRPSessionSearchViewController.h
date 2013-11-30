@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) FRPSessionSearchViewModel* viewModel;
 
+@property (nonatomic, readonly) NSNumber* selectedTitleIndex;
+
 @end

@@ -17,7 +17,7 @@
 - (void)loadView
 {
     UIView* view = [UIView new]; {
-        view.translatesAutoresizingMaskIntoConstraints = NO;
+        view.backgroundColor = [UIColor whiteColor];
         
         /// Structure
         
@@ -29,7 +29,6 @@
             
             [view addSubview:titleLabel];
         }
-        
         UITextView* descriptionView = [UITextView new]; {
             descriptionView.translatesAutoresizingMaskIntoConstraints = NO;
             
@@ -37,20 +36,20 @@
             [view addSubview:descriptionView];
         }
         
-        /// Laouyt
+        /* Layout UI */ {
+            NSDictionary* views = NSDictionaryOfVariableBindings(titleLabel, descriptionView);
+            [view addConstraints:
+             PVGroup(@[ PVVFL(@"V:|-10-[titleLabel]-10-[descriptionView]-10-|"),
+                        PVVFL(@"H:|-10-[titleLabel]-10-|"),
+                        PVVFL(@"H:|-10-[descriptionView]-10-|")
+                        ]).withViews(views).asArray];
+        }
         
-        NSDictionary* views = NSDictionaryOfVariableBindings(titleLabel, descriptionView);
-        [view addConstraints:
-         PVGroup(@[ PVVFL(@"V:|-10-[titleLabel]-10-[descriptionView]-10-|"),
-                    PVVFL(@"H:|-10-[titleLabel]-10-|"),
-                    PVVFL(@"H:|-10-[descriptionView]-10-|")
-                   ]).withViews(views).asArray];
-        
-        /// Content
-        
-        RAC(titleLabel, text) = RACObserve(self, viewModel.title);
-        RAC(descriptionView, text) = RACObserve(self, viewModel.descriptionText);
-    }
+        /* Fill with content */ {
+            RAC(titleLabel, text) = RACObserve(self, viewModel.title);
+            RAC(descriptionView, text) = RACObserve(self, viewModel.descriptionText);
+        }
+   }
     
     self.view = view;
 }

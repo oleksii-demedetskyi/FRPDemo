@@ -26,6 +26,7 @@
 		4824EFFD184928A300B9F40A /* FRPSessionSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824EFFC184928A300B9F40A /* FRPSessionSearchViewController.m */; };
 		4824F000184928B200B9F40A /* FRPSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824EFFF184928B200B9F40A /* FRPSessionModel.m */; };
 		4824F00318492D6600B9F40A /* FRPApplicationFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824F00218492D6600B9F40A /* FRPApplicationFlow.m */; };
+		4824F0061849D7F600B9F40A /* FRPStringArrayDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824F0051849D7F600B9F40A /* FRPStringArrayDataSource.m */; };
 		5157BC8FB0F04ED8BA554FB2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FE4874277B4D648DCFD703 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,8 @@
 		4824EFFF184928B200B9F40A /* FRPSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRPSessionModel.m; sourceTree = "<group>"; };
 		4824F00118492D6600B9F40A /* FRPApplicationFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FRPApplicationFlow.h; sourceTree = "<group>"; };
 		4824F00218492D6600B9F40A /* FRPApplicationFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRPApplicationFlow.m; sourceTree = "<group>"; };
+		4824F0041849D7F600B9F40A /* FRPStringArrayDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FRPStringArrayDataSource.h; sourceTree = "<group>"; };
+		4824F0051849D7F600B9F40A /* FRPStringArrayDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRPStringArrayDataSource.m; sourceTree = "<group>"; };
 		7DC7C3F95F18499F87905759 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A5FE4874277B4D648DCFD703 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -180,6 +183,8 @@
 				4824F00218492D6600B9F40A /* FRPApplicationFlow.m */,
 				4824EFEB1849282300B9F40A /* Session search */,
 				4824EFEC1849283200B9F40A /* Session details */,
+				4824F0041849D7F600B9F40A /* FRPStringArrayDataSource.h */,
+				4824F0051849D7F600B9F40A /* FRPStringArrayDataSource.m */,
 			);
 			name = Screens;
 			sourceTree = "<group>";
@@ -348,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4824F0061849D7F600B9F40A /* FRPStringArrayDataSource.m in Sources */,
 				4824EFFD184928A300B9F40A /* FRPSessionSearchViewController.m in Sources */,
 				4824F000184928B200B9F40A /* FRPSessionModel.m in Sources */,
 				4824EFC81849280700B9F40A /* main.m in Sources */,

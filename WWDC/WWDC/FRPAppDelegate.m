@@ -9,13 +9,20 @@
 #import "FRPAppDelegate.h"
 #import "FRPApplicationFlow.h"
 
+@interface FRPAppDelegate ()
+
+@property (nonatomic, strong) FRPApplicationFlow* currentFlow;
+
+@end
+
 @implementation FRPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    [[FRPApplicationFlow defaultFlow] startsInWindow:self.window];
+    self.currentFlow = [FRPApplicationFlow defaultFlow];
+    [self.currentFlow startsInWindow:self.window];
     
     return YES;
 }
