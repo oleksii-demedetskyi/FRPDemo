@@ -12,6 +12,6 @@
 
 + (instancetype)emptyDataSource;
 
-@property (nonatomic, strong, readwrite) NSArray* strings;
+@property (nonatomic, copy) NSArray* strings;
 
 @end

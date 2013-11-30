@@ -76,8 +76,10 @@
         }
         
         /* Setup search bar delegates */ {
-            RACSignal* cancelSearch = [self rac_signalForSelector:@selector(searchBarCancelButtonClicked:)
-                                                     fromProtocol:@protocol(UISearchBarDelegate)];
+            RACSignal* cancelSearch = ({
+                [self rac_signalForSelector:@selector(searchBarCancelButtonClicked:)
+                               fromProtocol:@protocol(UISearchBarDelegate)];
+            });
             
             [cancelSearch subscribeNext:^(RACTuple* t) {
                 UISearchBar* s = t.first;
@@ -85,11 +87,24 @@
                 [s resignFirstResponder];
             }];
             
+            RACSignal* textChange = ({
+                [self rac_signalForSelector:@selector(searchBar:textDidChange:)];
+            });
+            
+            RACSignal* newText = [textChange map:^NSString*(RACTuple* t) {
+                return t.second;
+            }];
+            
             searchBar.delegate = (id<UISearchBarDelegate>)self;
+            
+            RAC(self, viewModel.searchTerm) = newText;
         }
         /* Setup table view callbacks */ {
             self.dataSource = [FRPStringArrayDataSource emptyDataSource];
             RAC(self.dataSource, strings) = RACObserve(self, viewModel.titles);
+            [RACObserve(self, dataSource.strings) subscribeNext:^(id _) {
+                [tableView reloadData];
+            }];
             
             tableView.dataSource = self.dataSource;
             

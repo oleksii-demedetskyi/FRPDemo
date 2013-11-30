@@ -19,7 +19,7 @@
     UIView* view = [UIView new]; {
         view.backgroundColor = [UIColor whiteColor];
         
-        /// Structure
+        /// UI Components
         
         UILabel* titleLabel = [UILabel new]; {
             titleLabel.translatesAutoresizingMaskIntoConstraints = NO;

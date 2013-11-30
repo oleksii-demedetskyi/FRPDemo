@@ -22,7 +22,6 @@
 + (instancetype)stubModel {
     return [[self alloc] initStubModel];
 }
-
 - (id)initStubModel {
     self = [self init];
     if (self == nil) return nil;
@@ -38,9 +37,27 @@
     self = [super init];
     if (self == nil) return nil;
     
-    RAC(self,titles) = [RACObserve(self, model.sessions) map:^id(NSArray* sessions) {
+    RACSignal* __unused allSessions = RACObserve(self, model.sessions);
+    
+    RACSignal* __unused filteredSessions = ({
+        [RACSignal combineLatest:@[RACObserve(self, model.sessions),
+                                   RACObserve(self, searchTerm)]
+                          reduce:^NSArray*(NSArray* allItems, NSString* term){
+                              return [FRPSessionListModel sessionsMatchingSearch:term
+                                                                      inSessions:allItems];
+                          }];
+    }) ;
+    
+    RACSignal* sessions = filteredSessions;
+    
+    RAC(self, titles) = [sessions map:^id(NSArray* sessions) {
         return [sessions valueForKey:@keypath([FRPSessionModel new],title)];
     }];
+    
+    /// Suggestions.
+    // 1) Take all words.
+    // 2) Find all matched words
+    // 3) Send to suggestion
     
     @weakify(self)
     RACSignal* selectedModel = [RACObserve(self, selectedTitleIndex) map:^id(NSNumber*  value) {
@@ -54,6 +71,5 @@
     
     return self;
 }
-
 
 @end

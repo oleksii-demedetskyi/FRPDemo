@@ -14,4 +14,7 @@
 
 @property (nonatomic, readonly, copy) NSArray* sessions;
 
++ (NSArray*)sessionsMatchingSearch:(NSString*)searchTerm
+                        inSessions:(NSArray*)sessions;
+
 @end
