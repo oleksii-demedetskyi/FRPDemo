@@ -12,6 +12,6 @@
 
 @interface FRPSessionSearchViewController : UIViewController
 
-+ (instancetype) sessionSearchWithViewModel:(FRPSessionSearchViewModel*)model;
+@property (nonatomic, strong) FRPSessionSearchViewModel* viewModel;
 
 @end

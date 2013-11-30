@@ -12,6 +12,6 @@
 
 @interface FRPSessionDetailsViewController : UIViewController
 
-@property (nonatomic, strong) FRPSessionDetailsViewModel* model;
+@property (nonatomic, strong) FRPSessionDetailsViewModel* viewModel;
 
 @end

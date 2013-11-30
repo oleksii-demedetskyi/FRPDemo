@@ -8,17 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, FRPSessionViewModelState) {
-    FRPSessionViewModelDataDisplayState,
-    FRPSessionViewModelNoDataState,
-    FRPSessionViewSuggestionDesplayState,
-};
-
 @interface FRPSessionSearchViewModel : NSObject
 
 @property (nonatomic, readonly, copy) NSString* searchTerm;
-@property (nonatomic, readonly, assign) FRPSessionViewModelState state;
 
 @property (nonatomic, readonly, copy) NSArray* titles;
+@property (nonatomic, readonly, copy) NSArray* suggestions;
 
 @end

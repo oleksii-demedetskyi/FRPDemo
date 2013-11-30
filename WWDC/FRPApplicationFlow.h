@@ -10,6 +10,8 @@
 
 @interface FRPApplicationFlow : NSObject
 
-+ (void)startsInWindow:(UIWindow*)window;
++ (instancetype)defaultFlow;
+
+- (void)startsInWindow:(UIWindow*)window;
 
 @end
