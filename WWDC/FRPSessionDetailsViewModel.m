@@ -7,21 +7,31 @@
 //
 
 #import "FRPSessionDetailsViewModel.h"
+#import "FRPSessionModel.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @implementation FRPSessionDetailsViewModel
 
-+ (instancetype)stubViewModel
-{
++ (instancetype)stubViewModel {
     return [[self alloc] initStubViewModel];
 }
-
-- (id)initStubViewModel
-{
+- (id)initStubViewModel {
     self = [self init];
     if (self == nil) return nil;
     
     _title = @"Stub title";
     _descriptionText = @"Stub description";
+    
+    return self;
+}
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+    
+    RAC(self, title) = RACObserve(self, session.title);
+    RAC(self, descriptionText) = RACObserve(self, session.descriptionText);
     
     return self;
 }

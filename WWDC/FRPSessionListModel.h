@@ -10,6 +10,8 @@
 
 @interface FRPSessionListModel : NSObject
 
++ (instancetype) sessionListFromBundle;
+
 @property (nonatomic, readonly, copy) NSArray* sessions;
 
 @end

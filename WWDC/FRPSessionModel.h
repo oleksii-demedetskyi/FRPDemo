@@ -12,5 +12,7 @@
 
 @property (nonatomic, readonly, copy) NSString* descriptionText;
 @property (nonatomic, readonly, copy) NSString* title;
+@property (nonatomic, readonly, copy) NSString* track;
+@property (nonatomic, readonly, copy) NSString* number;
 
 @end

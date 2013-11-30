@@ -12,7 +12,10 @@
 #import "FRPSessionSearchViewController.h"
 #import "FRPSessionSearchViewModel.h"
 
+#import "FRPSessionListModel.h"
+
 #import "FRPSessionDetailsViewController.h"
+#import "FRPSessionDetailsViewModel.h"
 
 @implementation FRPApplicationFlow
 
@@ -22,13 +25,15 @@
 }
 
 - (void)startsInWindow:(UIWindow *)window {
-    FRPSessionSearchViewModel* searchViewModel = [FRPSessionSearchViewModel stubModel];
+    FRPSessionSearchViewModel* searchViewModel = [FRPSessionSearchViewModel new];
     FRPSessionSearchViewController* sessionsViewController = [FRPSessionSearchViewController new];
     UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:sessionsViewController];
     
     sessionsViewController.title = @"Session search";
     sessionsViewController.edgesForExtendedLayout = UIRectEdgeNone;
     sessionsViewController.viewModel = searchViewModel;
+    
+    searchViewModel.model = [FRPSessionListModel sessionListFromBundle];
     
     window.backgroundColor = [UIColor whiteColor];
     window.rootViewController = navigation;
@@ -38,7 +43,7 @@
     detailsViewController.title = @"Session details";
     detailsViewController.edgesForExtendedLayout = UIRectEdgeNone;
     
-    [[RACObserve(searchViewModel, selectedSessionDetails) skip:1].logAll subscribeNext:^(FRPSessionDetailsViewModel* viewModel) {
+    [[RACObserve(searchViewModel, selectedSessionDetails.session) skip:1] subscribeNext:^(FRPSessionDetailsViewModel* viewModel) {
         [navigation setViewControllers:@[sessionsViewController, detailsViewController] animated:YES];
     }];
     

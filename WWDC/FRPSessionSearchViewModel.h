@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @class FRPSessionDetailsViewModel;
+@class FRPSessionListModel;
 
 @interface FRPSessionSearchViewModel : NSObject
 
 + (instancetype)stubModel;
+
+@property (nonatomic, strong) FRPSessionListModel* model;
 
 @property (nonatomic, readonly, copy) NSString* searchTerm;
 

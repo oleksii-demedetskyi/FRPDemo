@@ -13,6 +13,12 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <Parus/Parus.h>
 
+@interface FRPSessionSearchViewController()
+
+@property (nonatomic, strong) FRPStringArrayDataSource* dataSource;
+
+@end
+
 @implementation FRPSessionSearchViewController
 
 - (void)loadView
@@ -82,10 +88,10 @@
             searchBar.delegate = (id<UISearchBarDelegate>)self;
         }
         /* Setup table view callbacks */ {
-            FRPStringArrayDataSource* stringsDataSource = [FRPStringArrayDataSource emptyDataSource];
-            RAC(stringsDataSource, strings) = RACObserve(self, viewModel.titles);
+            self.dataSource = [FRPStringArrayDataSource emptyDataSource];
+            RAC(self.dataSource, strings) = RACObserve(self, viewModel.titles);
             
-            tableView.dataSource = stringsDataSource;
+            tableView.dataSource = self.dataSource;
             
             RACSignal* didSelectCell = [self rac_signalForSelector:@selector(tableView:didSelectRowAtIndexPath:)];
             [didSelectCell subscribeNext:^(RACTuple* t) {

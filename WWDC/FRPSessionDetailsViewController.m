@@ -31,7 +31,7 @@
         }
         UITextView* descriptionView = [UITextView new]; {
             descriptionView.translatesAutoresizingMaskIntoConstraints = NO;
-            
+            descriptionView.editable = NO;
             
             [view addSubview:descriptionView];
         }

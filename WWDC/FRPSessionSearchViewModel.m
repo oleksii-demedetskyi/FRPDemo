@@ -9,12 +9,17 @@
 #import "FRPSessionSearchViewModel.h"
 #import "FRPSessionDetailsViewModel.h"
 
+#import "FRPSessionListModel.h"
+#import "FRPSessionModel.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <MACollectionUtilities/MACollectionUtilities.h>
+#import <libextobjc/EXTKeyPathCoding.h>
+#import <libextobjc/EXTScope.h>
 
 @implementation FRPSessionSearchViewModel
 
-+ (instancetype)stubModel
-{
++ (instancetype)stubModel {
     return [[self alloc] initStubModel];
 }
 
@@ -28,5 +33,27 @@
                                          mapReplace:[FRPSessionDetailsViewModel stubViewModel]];
     return self;
 }
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+    
+    RAC(self,titles) = [RACObserve(self, model.sessions) map:^id(NSArray* sessions) {
+        return [sessions valueForKey:@keypath([FRPSessionModel new],title)];
+    }];
+    
+    @weakify(self)
+    RACSignal* selectedModel = [RACObserve(self, selectedTitleIndex) map:^id(NSNumber*  value) {
+        @strongify(self)
+        
+        return self.model.sessions[value.integerValue];
+    }];
+    
+    RAC(self, selectedSessionDetails) = [RACSignal return:[FRPSessionDetailsViewModel new]];
+    RAC(self.selectedSessionDetails, session) = selectedModel;
+    
+    return self;
+}
+
 
 @end

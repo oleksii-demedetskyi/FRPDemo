@@ -13,7 +13,8 @@
 @interface FRPSessionDetailsViewModel : NSObject
 
 + (instancetype)stubViewModel;
-+ (instancetype)viewModelWithSession:(FRPSessionModel*)session;
+
+@property (nonatomic, readonly, copy) FRPSessionModel* session;
 
 @property (nonatomic, readonly, copy) NSString* descriptionText;
 @property (nonatomic, readonly, copy) NSString* title;

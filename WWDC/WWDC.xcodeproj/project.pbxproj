@@ -27,6 +27,8 @@
 		4824F000184928B200B9F40A /* FRPSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824EFFF184928B200B9F40A /* FRPSessionModel.m */; };
 		4824F00318492D6600B9F40A /* FRPApplicationFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824F00218492D6600B9F40A /* FRPApplicationFlow.m */; };
 		4824F0061849D7F600B9F40A /* FRPStringArrayDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4824F0051849D7F600B9F40A /* FRPStringArrayDataSource.m */; };
+		4824F0091849EBFC00B9F40A /* 2012_sessions.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4824F0081849EBFC00B9F40A /* 2012_sessions.yml */; };
+		4824F00C1849EC1F00B9F40A /* 2013_sessions.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4824F00B1849EC1F00B9F40A /* 2013_sessions.yml */; };
 		5157BC8FB0F04ED8BA554FB2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FE4874277B4D648DCFD703 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +75,8 @@
 		4824F00218492D6600B9F40A /* FRPApplicationFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRPApplicationFlow.m; sourceTree = "<group>"; };
 		4824F0041849D7F600B9F40A /* FRPStringArrayDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FRPStringArrayDataSource.h; sourceTree = "<group>"; };
 		4824F0051849D7F600B9F40A /* FRPStringArrayDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRPStringArrayDataSource.m; sourceTree = "<group>"; };
+		4824F0081849EBFC00B9F40A /* 2012_sessions.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 2012_sessions.yml; path = "../Session data/2012/2012_sessions.yml"; sourceTree = "<group>"; };
+		4824F00B1849EC1F00B9F40A /* 2013_sessions.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 2013_sessions.yml; path = "../Session data/2013/2013_sessions.yml"; sourceTree = "<group>"; };
 		7DC7C3F95F18499F87905759 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A5FE4874277B4D648DCFD703 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -105,6 +109,7 @@
 		4824EFAF1849280700B9F40A = {
 			isa = PBXGroup;
 			children = (
+				4824F0071849EBE500B9F40A /* Data */,
 				4824EFF11849285A00B9F40A /* Models */,
 				4824EFEA1849281200B9F40A /* Screens */,
 				4824EFC11849280700B9F40A /* WWDC */,
@@ -222,6 +227,15 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		4824F0071849EBE500B9F40A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				4824F00B1849EC1F00B9F40A /* 2013_sessions.yml */,
+				4824F0081849EBFC00B9F40A /* 2012_sessions.yml */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -300,8 +314,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4824F0091849EBFC00B9F40A /* 2012_sessions.yml in Resources */,
 				4824EFC61849280700B9F40A /* InfoPlist.strings in Resources */,
 				4824EFCE1849280700B9F40A /* Images.xcassets in Resources */,
+				4824F00C1849EC1F00B9F40A /* 2013_sessions.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
